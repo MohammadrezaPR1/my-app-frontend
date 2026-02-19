@@ -129,7 +129,7 @@ export const AdminContextProvider = ({ children }) => {
 
     const getAllUsers = async () => {
         try {
-            const res = await axiosJWT.get("${API_URL}/users", {
+            const res = await axiosJWT.get(`${API_URL}/users`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -253,7 +253,7 @@ export const AdminContextProvider = ({ children }) => {
 
     const userInfo = async () => {
         try {
-            const res = await axiosJWT.get('${API_URL}/users/profile', {
+            const res = await axiosJWT.get(`${API_URL}/users/profile`, {
                 headers: {
                     authorization: `Bearer ${token}`
                 }
@@ -267,7 +267,7 @@ export const AdminContextProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            const res = await axiosJWT.delete("${API_URL}/users/logout", {
+            const res = await axiosJWT.delete(`${API_URL}/users/logout`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -338,7 +338,7 @@ export const AdminContextProvider = ({ children }) => {
     // تابع های مربوط یه دسته بندی 
     const getAllCategories = async () => {
         try {
-            const res = await axiosJWT.get("${API_URL}/get-category", {
+            const res = await axiosJWT.get(`${API_URL}/get-category`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -351,7 +351,7 @@ export const AdminContextProvider = ({ children }) => {
 
     const createCategory = async (name) => {
         try {
-            const res = await axiosJWT.post("${API_URL}/create-category", name, {
+            const res = await axiosJWT.post(`${API_URL}/create-category`, name, {
                 headers: {
                     authorization: `Bearer ${token}`
                 }
@@ -453,7 +453,7 @@ export const AdminContextProvider = ({ children }) => {
 
         try {
             const res = await axiosJWT.post(
-                "${API_URL}/create-news",
+                `${API_URL}/create-news`,
                 formData,
                 {
                     headers: {
@@ -490,7 +490,7 @@ export const AdminContextProvider = ({ children }) => {
 
     const handleNews = async () => {
         try {
-            const res = await axiosJWT.get("${API_URL}/news", {
+            const res = await axiosJWT.get(`${API_URL}/news`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -614,7 +614,7 @@ export const AdminContextProvider = ({ children }) => {
     // توابع مربوط به ویدیو ها 
     const getAllVideos = async () => {
         try {
-            const res = await axiosJWT.get("${API_URL}/get-video", {
+            const res = await axiosJWT.get(`${API_URL}/get-video`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -633,7 +633,7 @@ export const AdminContextProvider = ({ children }) => {
 
         try {
             const res = await axiosJWT.post(
-                "${API_URL}/create-video",
+                `${API_URL}/create-video`,
                 formData,
                 {
                     headers: {
