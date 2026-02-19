@@ -7,7 +7,7 @@ export const lastPostReducer = (state = { lastPosts: [] }, action) => {
         case LAST_POST_REQUEST:
             return { loading: true, lastPosts: [] };
         case LAST_POST_SUCCESS:
-            return { loading: false, lastPosts: Array.isArray(action.pyload) ? action.pyload : [] };
+            return { loading: false, lastPosts: action.pyload };
         case LAST_POST_FAIL:
             return { loading: false, error: action.pyload };
         default:

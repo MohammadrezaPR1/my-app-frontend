@@ -8,7 +8,7 @@ export const relatedNewsReducer = (state = { relatedNews: [] }, action) => {
         case RELATED_NEWS_REQUEST:
             return { loading: true, relatedNews: [] };
         case RELATED_NEWS_SUCCESS:
-            return { loading: false, relatedNews: Array.isArray(action.pyload) ? action.pyload : [] };
+            return { loading: false, relatedNews: action.pyload };
         case RELATED_NEWS_FAIL:
             return { loading: false, error: action.pyload };
         default:

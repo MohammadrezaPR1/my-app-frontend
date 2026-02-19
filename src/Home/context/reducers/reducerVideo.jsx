@@ -6,7 +6,7 @@ export const videoReducer = (state = { videos: [] }, action) => {
         case VIDEO_REQUEST:
             return { loading: true, videos: [] };
         case VIDEO_SUCCESS:
-            return { loading: false, videos: Array.isArray(action.pyload) ? action.pyload : [] };
+            return { loading: false, videos: action.pyload };
         case VIDEO_FAIL:
             return { loading: false, error: action.pyload };
         default:

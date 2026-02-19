@@ -6,7 +6,7 @@ export const categoryNewsReducer = (state = { categoryNews: [] }, action) => {
         case CATEGORY_NEWS_REQUEST:
             return { loading: true, categoryNews: [] };
         case CATEGORY_NEWS_SUCCESS:
-            return { loading: false, categoryNews: Array.isArray(action.pyload) ? action.pyload : [] };
+            return { loading: false, categoryNews: action.pyload };
         case CATEGORY_NEWS_FAIL :
             return { loading: false, error: action.pyload };
         default:

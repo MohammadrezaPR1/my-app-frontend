@@ -6,7 +6,7 @@ export const mostViewReducer = (state = { mostView: [] }, action) => {
         case  MOST_VIEW_REQUEST :
             return { loading: true, mostView: [] };
         case MOST_VIEW_SUCCESS :
-            return { loading: false, mostView: Array.isArray(action.pyload) ? action.pyload : [] };
+            return { loading: false, mostView: action.pyload };
         case MOST_VIEW_FAIL:
             return { loading: false, error: action.pyload };
         default:
