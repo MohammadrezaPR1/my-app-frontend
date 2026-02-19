@@ -1,5 +1,5 @@
-import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { FaLock, FaEnvelope, FaArrowLeft, FaEye, FaEyeSlash, FaGoogle, FaGithub } from "react-icons/fa";
@@ -15,8 +15,16 @@ const formSchema = yup.object({
 });
 
 const Login = () => {
-  const { login, error } = useContext(AdminContext);
+  const { login, error, userId } = useContext(AdminContext);
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
+  // وقتی userId در context ست شد، navigate انجام می‌شه - این race condition را حذف می‌کند
+  useEffect(() => {
+    if (userId) {
+      navigate("/admin-dashboard", { replace: true });
+    }
+  }, [userId]);
 
   const formik = useFormik({
     initialValues: { email: "", password: "" },

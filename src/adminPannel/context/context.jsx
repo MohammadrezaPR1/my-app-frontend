@@ -94,7 +94,6 @@ export const AdminContextProvider = ({ children }) => {
 
     const login = async (input) => {
         try {
-            // می خوایم دیتا را به سمت بک اند ارسال کنیم 
             const res = await axios.post(`${API_URL}/users/login`, input)
             if (res.data.error) {
                 toast.error(res.data.error, {
@@ -106,9 +105,9 @@ export const AdminContextProvider = ({ children }) => {
                     className: "custom-toast custom-toast-error",
                     style: toastStyle,
                 });
+                return false;
             } else {
                 await refreshToken();
-                navigate("/admin-dashboard");
                 toast.success(res.data.msg, {
                     position: "bottom-center",
                     autoClose: 3500,
@@ -118,11 +117,11 @@ export const AdminContextProvider = ({ children }) => {
                     className: "custom-toast custom-toast-success",
                     style: toastStyle,
                 });
+                return true;
             }
-
-
         } catch (error) {
             console.log(error);
+            return false;
         }
     }
 
