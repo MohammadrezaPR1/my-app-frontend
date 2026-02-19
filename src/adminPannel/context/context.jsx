@@ -39,6 +39,15 @@ export const AdminContextProvider = ({ children }) => {
     const [profileName, setProfileName] = useState("");
     const [commentsList, setCommentsList] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [pendingNavigate, setPendingNavigate] = useState(false);
+
+    // این useEffect مطمئن می‌شه که navigation فقط بعد از ثبت شدن userId در state انجام می‌شه
+    useEffect(() => {
+        if (userId && pendingNavigate) {
+            navigate("/admin-dashboard");
+            setPendingNavigate(false);
+        }
+    }, [userId, pendingNavigate]);
 
 
     useEffect(() => {
@@ -108,7 +117,7 @@ export const AdminContextProvider = ({ children }) => {
                 });
             } else {
                 await refreshToken();
-                navigate("/admin-dashboard")
+                setPendingNavigate(true);
                 toast.success(res.data.msg, {
                     position: "bottom-center",
                     autoClose: 3500,

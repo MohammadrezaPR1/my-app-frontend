@@ -28,10 +28,25 @@ import NotFound from './Home/NotFound';
 import Admin from './adminPannel/dashboard/Admin';
 import AboutUs from './Home/components/aboutUs/AboutUs';
 import ContactUs from './Home/components/contactUs/ContactUs';
+import { Navigate } from 'react-router-dom';
+
+// کامپوننت محافظ مسیر: اگر لاگین نشده باشد به /login هدایت می‌کند
+const ProtectedRoute = ({ children }) => {
+  const { userId, isLoading } = useContext(AdminContext);
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+  if (!userId) return <Navigate to="/login" replace />;
+  return children;
+};
 
 function App() {
 
-  const { userId, isLoading } = useContext(AdminContext)
+  const { isLoading } = useContext(AdminContext)
 
   if (isLoading) {
     return (
@@ -48,50 +63,38 @@ function App() {
         <Route path='/' element={<HomePage />}  ></Route>
         <Route path="/news-detail/:id" element={<NewsDetail />} />
 
-
         <Route path='/login' element={<Login />} ></Route>
         <Route path='/about' element={<AboutUs />} > </Route>
         <Route path='/contact' element={<ContactUs />} > </Route>
+
+        {/* مسیرهایی که فقط کاربر ادمین می‌تونه داشته باشد - همیشه رجیستر شده هستند */}
+        <Route element={<ProtectedRoute><Admin /></ProtectedRoute>}>
+          <Route path='/admin-view-users' element={<ViewUsers />} ></Route>
+          <Route path='/admin-add-user' element={<AddUser />} ></Route>
+          <Route path='/admin-edit-user/:id' element={<EditUser />}  ></Route>
+
+          {/* مسیر های مربوط به دسته بندی ها */}
+          <Route path='/admin-add-category' element={<AddCategory />} ></Route>
+          <Route path='/admin-view-categories' element={<ViewCategories />} ></Route>
+          <Route path='/admin-edit-category/:id' element={<EditCategory />} ></Route>
+        </Route>
+
+        <Route path='/admin-dashboard' element={<ProtectedRoute><Main /></ProtectedRoute>} ></Route>
+        <Route path='/admin-update-profile/:id' element={<ProtectedRoute><UpdateProfile /></ProtectedRoute>} />
+        {/* مسیر های مربوط به خبر ها  */}
+        <Route path='/admin-view-news' element={<ProtectedRoute><ViewNews /></ProtectedRoute>}></Route>
+        <Route path='/admin-add-news' element={<ProtectedRoute><AddNews /></ProtectedRoute>} ></Route>
+        <Route path='/admin-edit-news/:id' element={<ProtectedRoute><EditNews /></ProtectedRoute>} > </Route>
+
+        {/* مسیر های مربوط به ویدیو ها  */}
+        <Route path='/admin-view-videos' element={<ProtectedRoute><ViewVideos /></ProtectedRoute>} ></Route>
+        <Route path='/admin-add-video' element={<ProtectedRoute><AddVideo /></ProtectedRoute>} ></Route>
+        <Route path='/admin-edit-video/:id' element={<ProtectedRoute><EditVideo /></ProtectedRoute>}  ></Route>
+        {/* مسیر های مربوط به کامنت ها  */}
+        <Route path='/admin-view-comments' element={<ProtectedRoute><ViewComments /></ProtectedRoute>} ></Route>
+
+        {/* صفحه 404 - باید آخرین route باشد */}
         <Route path='*' element={<NotFound />} ></Route>
-        {
-          userId && (
-            <>
-
-
-              {/* مسیرهایی که فقط کارب ادمین میتونه داشته باشد  */}
-              <Route element={<Admin />}>
-
-                <Route path='/admin-view-users' element={<ViewUsers />} ></Route>
-                <Route path='/admin-add-user' element={<AddUser />} ></Route>
-                <Route path='/admin-edit-user/:id' element={<EditUser />}  ></Route>
-
-                {/* مسیر های مربوط به دسته بندی ها */}
-                <Route path='/admin-add-category' element={<AddCategory />} ></Route>
-                <Route path='/admin-view-categories' element={<ViewCategories />} ></Route>
-                <Route path='/admin-edit-category/:id' element={<EditCategory />} ></Route>
-
-
-              </Route>
-
-
-
-              <Route path='/admin-dashboard' element={<Main />} ></Route>
-              <Route path='/admin-update-profile/:id' element={<UpdateProfile />} />
-              {/* مسیر های مربوط به خبر ها  */}
-              <Route path='/admin-view-news' element={<ViewNews />}></Route>
-              <Route path='/admin-add-news' element={<AddNews />} ></Route>
-              <Route path='/admin-edit-news/:id' element={<EditNews />} > </Route>
-
-              {/* مسیر های مربوط به ویدیو ها  */}
-              <Route path='/admin-view-videos' element={<ViewVideos />} ></Route>
-              <Route path='/admin-add-video' element={<AddVideo />} ></Route>
-              <Route path='/admin-edit-video/:id' element={<EditVideo />}  ></Route>
-              {/* مسیر های مربوط به کامنت ها  */}
-              <Route path='/admin-view-comments' element={<ViewComments />} ></Route>
-            </>
-          )
-        }
-
       </Routes>
       <ToastContainer />
     </>
