@@ -134,7 +134,7 @@ export const AdminContextProvider = ({ children }) => {
                     Authorization: `Bearer ${token}`
                 }
             });
-            setUsersList(res.data)
+            setUsersList(Array.isArray(res.data) ? res.data : [])
         } catch (error) {
             console.log(error);
         }
@@ -343,7 +343,7 @@ export const AdminContextProvider = ({ children }) => {
                     Authorization: `Bearer ${token}`
                 }
             })
-            setCategoryList(res.data)
+            setCategoryList(Array.isArray(res.data) ? res.data : [])
         } catch (error) {
             console.log(error);
         }
@@ -495,7 +495,7 @@ export const AdminContextProvider = ({ children }) => {
                     Authorization: `Bearer ${token}`
                 }
             })
-            setNewsList(res.data)
+            setNewsList(Array.isArray(res.data) ? res.data : [])
         } catch (error) {
             console.log(error);
         }
@@ -619,7 +619,7 @@ export const AdminContextProvider = ({ children }) => {
                     Authorization: `Bearer ${token}`
                 }
             })
-            setVideosList(res.data)
+            setVideosList(Array.isArray(res.data) ? res.data : [])
         } catch (error) {
             console.log(error);
         }
@@ -741,7 +741,7 @@ export const AdminContextProvider = ({ children }) => {
                     authorization: `Bearer ${token}`
                 }
             });
-            setCommentsList(res.data)
+            setCommentsList(Array.isArray(res.data) ? res.data : [])
         } catch (error) {
             console.log(error);
         }

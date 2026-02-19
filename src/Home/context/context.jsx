@@ -169,7 +169,7 @@ export const HomeContextProvider = ({ children }) => {
     const loadCategory = async () => {
         try {
             const res = await axios.get(`${API_URL}/home/get-category`);
-            setCategories(res.data)
+            setCategories(Array.isArray(res.data) ? res.data : [])
             console.log(res);
         } catch (error) {
             console.log(error);
