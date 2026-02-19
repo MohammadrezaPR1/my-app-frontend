@@ -10,7 +10,7 @@ import ViewNews from './adminPannel/dashboard/news/ViewNews';
 import Login from './adminPannel/login/Login'
 import './index.css'
 import './customToast.css'
-import { Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import ViewVideos from './adminPannel/dashboard/videos/ViewVideos';
 import AddVideo from './adminPannel/dashboard/videos/AddVideo';
@@ -29,65 +29,73 @@ import Admin from './adminPannel/dashboard/Admin';
 import AboutUs from './Home/components/aboutUs/AboutUs';
 import ContactUs from './Home/components/contactUs/ContactUs';
 
-const LoadingSpinner = () => (
-  <div className="flex justify-center items-center h-screen bg-gray-50">
-    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
-  </div>
-);
-
-// ProtectedRoute: اگر لاگین نباشد به /login هدایت می‌کند، از Outlet برای nested routes استفاده می‌کند
-const ProtectedRoute = () => {
-  const { userId, isLoading } = useContext(AdminContext);
-  if (isLoading) return <LoadingSpinner />;
-  if (!userId) return <Navigate to="/login" replace />;
-  return <Outlet />;
-};
-
 function App() {
-  const { isLoading } = useContext(AdminContext);
 
-  if (isLoading) return <LoadingSpinner />;
+  const { userId, isLoading } = useContext(AdminContext)
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
   return (
     <>
       <Routes>
-        {/* مسیرهای عمومی */}
-        <Route path='/' element={<HomePage />} />
+        {/* مسیر های مربوط به خانه  */}
+        <Route path='/' element={<HomePage />}  ></Route>
         <Route path="/news-detail/:id" element={<NewsDetail />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/about' element={<AboutUs />} />
-        <Route path='/contact' element={<ContactUs />} />
 
-        {/* مسیرهای محافظت‌شده ادمین - همه زیر یک ProtectedRoute */}
-        <Route element={<ProtectedRoute />}>
-          {/* مسیرهایی که نیاز به layout Admin دارند */}
-          <Route element={<Admin />}>
-            <Route path='/admin-view-users' element={<ViewUsers />} />
-            <Route path='/admin-add-user' element={<AddUser />} />
-            <Route path='/admin-edit-user/:id' element={<EditUser />} />
-            <Route path='/admin-add-category' element={<AddCategory />} />
-            <Route path='/admin-view-categories' element={<ViewCategories />} />
-            <Route path='/admin-edit-category/:id' element={<EditCategory />} />
-          </Route>
 
-          {/* مسیرهای ادمین بدون layout Admin */}
-          <Route path='/admin-dashboard' element={<Main />} />
-          <Route path='/admin-update-profile/:id' element={<UpdateProfile />} />
-          <Route path='/admin-view-news' element={<ViewNews />} />
-          <Route path='/admin-add-news' element={<AddNews />} />
-          <Route path='/admin-edit-news/:id' element={<EditNews />} />
-          <Route path='/admin-view-videos' element={<ViewVideos />} />
-          <Route path='/admin-add-video' element={<AddVideo />} />
-          <Route path='/admin-edit-video/:id' element={<EditVideo />} />
-          <Route path='/admin-view-comments' element={<ViewComments />} />
-        </Route>
+        <Route path='/login' element={<Login />} ></Route>
+        <Route path='/about' element={<AboutUs />} > </Route>
+        <Route path='/contact' element={<ContactUs />} > </Route>
+        <Route path='*' element={<NotFound />} ></Route>
+        {
+          userId && (
+            <>
 
-        {/* صفحه 404 - آخرین route */}
-        <Route path='*' element={<NotFound />} />
+
+              {/* مسیرهایی که فقط کارب ادمین میتونه داشته باشد  */}
+              <Route element={<Admin />}>
+
+                <Route path='/admin-view-users' element={<ViewUsers />} ></Route>
+                <Route path='/admin-add-user' element={<AddUser />} ></Route>
+                <Route path='/admin-edit-user/:id' element={<EditUser />}  ></Route>
+
+                {/* مسیر های مربوط به دسته بندی ها */}
+                <Route path='/admin-add-category' element={<AddCategory />} ></Route>
+                <Route path='/admin-view-categories' element={<ViewCategories />} ></Route>
+                <Route path='/admin-edit-category/:id' element={<EditCategory />} ></Route>
+
+
+              </Route>
+
+
+
+              <Route path='/admin-dashboard' element={<Main />} ></Route>
+              <Route path='/admin-update-profile/:id' element={<UpdateProfile />} />
+              {/* مسیر های مربوط به خبر ها  */}
+              <Route path='/admin-view-news' element={<ViewNews />}></Route>
+              <Route path='/admin-add-news' element={<AddNews />} ></Route>
+              <Route path='/admin-edit-news/:id' element={<EditNews />} > </Route>
+
+              {/* مسیر های مربوط به ویدیو ها  */}
+              <Route path='/admin-view-videos' element={<ViewVideos />} ></Route>
+              <Route path='/admin-add-video' element={<AddVideo />} ></Route>
+              <Route path='/admin-edit-video/:id' element={<EditVideo />}  ></Route>
+              {/* مسیر های مربوط به کامنت ها  */}
+              <Route path='/admin-view-comments' element={<ViewComments />} ></Route>
+            </>
+          )
+        }
+
       </Routes>
       <ToastContainer />
     </>
-  );
+  )
 }
 
 export default App

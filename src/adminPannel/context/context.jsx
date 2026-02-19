@@ -47,21 +47,15 @@ export const AdminContextProvider = ({ children }) => {
 
     const refreshToken = async () => {
         try {
-            // ابتدا سعی می‌کنیم با کوکی، اگر نشد از localStorage استفاده می‌کنیم (fallback برای Safari iOS)
-            const storedRefreshToken = localStorage.getItem("refreshToken");
-            const res = await axios.post(`${API_URL}/token`, 
-                storedRefreshToken ? { refreshToken: storedRefreshToken } : {}
-            );
-            const newAccessToken = res.data.accsessToken;
-            setToken(newAccessToken);
-            const decoded = jwtDecode(newAccessToken);
+            const res = await axios.get(`${API_URL}/token`);
+            setToken(res.data.accsessToken);
+            const decoded = jwtDecode(res.data.accsessToken);
+            //  مقدار دهی استیت ها 
             setName(decoded.name);
             setUserId(decoded.userId);
             setIsAdmin(decoded.isAdmin);
             setEmail(decoded.email);
             setExpire(decoded.exp);
-            // accessToken را هم ذخیره می‌کنیم
-            localStorage.setItem("accessToken", newAccessToken);
             setIsLoading(false);
         } catch (error) {
             console.log(error);
@@ -77,17 +71,12 @@ export const AdminContextProvider = ({ children }) => {
         async (config) => {
             const currentDate = new Date();
             if (expire * 1000 < currentDate.getTime()) {
-                const storedRefreshToken = localStorage.getItem("refreshToken");
-                const response = await axios.post(`${API_URL}/token`,
-                    storedRefreshToken ? { refreshToken: storedRefreshToken } : {}
-                );
-                const newAccessToken = response.data.accsessToken;
-                config.headers.Authorization = `Bearer ${newAccessToken}`;
-                setToken(newAccessToken);
-                localStorage.setItem("accessToken", newAccessToken);
-                const decoded = jwtDecode(newAccessToken);
+                const response = await axios.get(`${API_URL}/token`);
+                config.headers.Authorization = `Bearer ${response.data.accsessToken}`;
+                setToken(response.data.accsessToken);
+                const decoded = jwtDecode(response.data.accsessToken);
                 setName(decoded.name);
-                setEmail(decoded.email);
+                setEmail(decoded.email)
                 setUserId(decoded.userId);
                 setIsAdmin(decoded.isAdmin);
                 setExpire(decoded.exp);
@@ -105,6 +94,7 @@ export const AdminContextProvider = ({ children }) => {
 
     const login = async (input) => {
         try {
+            // می خوایم دیتا را به سمت بک اند ارسال کنیم 
             const res = await axios.post(`${API_URL}/users/login`, input)
             if (res.data.error) {
                 toast.error(res.data.error, {
@@ -116,21 +106,9 @@ export const AdminContextProvider = ({ children }) => {
                     className: "custom-toast custom-toast-error",
                     style: toastStyle,
                 });
-                return false;
             } else {
-                // state را مستقیم از رسپانس login ست می‌کنیم - بدون نیاز به کوکی
-                // این race condition روی Safari iOS را کاملا حل می‌کند
-                const { accsessToken, refreshToken: rt } = res.data;
-                const decoded = jwtDecode(accsessToken);
-                setToken(accsessToken);
-                setName(decoded.name);
-                setUserId(decoded.userId);
-                setIsAdmin(decoded.isAdmin);
-                setEmail(decoded.email);
-                setExpire(decoded.exp);
-                // ذخیره در localStorage برای تمام دیوایس‌ها از جمله Android و iPhone Safari
-                if (rt) localStorage.setItem("refreshToken", rt);
-                localStorage.setItem("accessToken", accsessToken);
+                await refreshToken();
+                navigate("/admin-dashboard")
                 toast.success(res.data.msg, {
                     position: "bottom-center",
                     autoClose: 3500,
@@ -140,11 +118,11 @@ export const AdminContextProvider = ({ children }) => {
                     className: "custom-toast custom-toast-success",
                     style: toastStyle,
                 });
-                return true;
             }
+
+
         } catch (error) {
             console.log(error);
-            return false;
         }
     }
 
@@ -289,11 +267,11 @@ export const AdminContextProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            const storedRefreshToken = localStorage.getItem("refreshToken");
             const res = await axiosJWT.delete(`${API_URL}/users/logout`, {
-                headers: { Authorization: `Bearer ${token}` },
-                data: storedRefreshToken ? { refreshToken: storedRefreshToken } : {}
-            });
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
             if (res.data.error) {
                 toast.error(res.data.error, {
                     position: "bottom-center",
@@ -305,14 +283,6 @@ export const AdminContextProvider = ({ children }) => {
                     style: toastStyle,
                 });
             } else {
-                // پاک کردن localStorage
-                localStorage.removeItem("refreshToken");
-                localStorage.removeItem("accessToken");
-                setUserId("");
-                setToken("");
-                setName("");
-                setEmail("");
-                setIsAdmin(null);
                 toast.success(res.data.msg, {
                     position: "bottom-center",
                     autoClose: 3500,
