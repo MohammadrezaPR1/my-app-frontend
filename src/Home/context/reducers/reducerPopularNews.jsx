@@ -6,7 +6,7 @@ export const popularNewsReducer = (state = { popularNews: [] }, action) => {
         case POPULAR_NEWS_REQUEST:
             return { loading: true, popularNews: [] };
         case POPULAR_NEWS_SUCCESS:
-            return { loading: false, popularNews: action.pyload };
+            return { loading: false, popularNews: Array.isArray(action.pyload) ? action.pyload : [] };
         case POPULAR_NEWS_FAIL:
             return { loading: false, error: action.pyload };
         default:
