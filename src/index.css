@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Ravi";
+  src: url(./assets/fonts/Ravi-Regular.ttf);
+}
+
+:root {
+  --primary: #1d4ed8;
+  --primary-dark: #1e3a8a;
+  --secondary: #fbbf24;
+  --accent: #ef4444;
+  --bg-light: #f8fafc;
+  --card-bg: rgba(255, 255, 255, 0.8);
+}
+
+body {
+  font-family: Ravi, sans-serif;
+  background-color: var(--bg-light);
+  color: #1e293b;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-dark {
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Modern Shadows */
+.shadow-premium {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+}
+
+.shadow-glow {
+  box-shadow: 0 0 20px rgba(29, 78, 216, 0.15);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Animations */
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+textarea {
+  white-space: pre-wrap;
+}
+
+/* RTL Helpers */
+[dir="rtl"] .ml-auto {
+  margin-right: auto;
+  margin-left: initial;
+}
+
+[dir="rtl"] .mr-auto {
+  margin-left: auto;
+  margin-right: initial;
+}
+
+@media (max-width: 360px) {
+  .admin-panel {
+    overflow-x: hidden;
+  }
+
+  .admin-panel .admin-content {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
