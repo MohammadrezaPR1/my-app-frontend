@@ -105,7 +105,7 @@ export const HomeContextProvider = ({ children }) => {
     const loadVideo = async () => {
         try {
             dispatch({ type: VIDEO_REQUEST });
-            const { data } = await axios.get("${API_URL}/single-video");
+            const { data } = await axios.get(`${API_URL}/single-video`);
             dispatch({ type: VIDEO_SUCCESS, pyload: data })
         } catch (error) {
             dispatch({ type: VIDEO_FAIL, pyload: error.response.data.message })
@@ -116,7 +116,7 @@ export const HomeContextProvider = ({ children }) => {
     const loadLastPosts = async () => {
         try {
             lsatPostDispatch({ type: LAST_POST_REQUEST });
-            const { data } = await axios.get("${API_URL}/news/lastnews");
+            const { data } = await axios.get(`${API_URL}/news/lastnews`);
             lsatPostDispatch({ type: LAST_POST_SUCCESS, pyload: data })
         } catch (error) {
             lsatPostDispatch({ type: LAST_POST_FAIL, pyload: error.response.data.message })
@@ -126,7 +126,7 @@ export const HomeContextProvider = ({ children }) => {
     const loadPopularNews = async () => {
         try {
             popularNewsDispatch({ type: POPULAR_NEWS_REQUEST });
-            const { data } = await axios.get("${API_URL}/news/popular");
+            const { data } = await axios.get(`${API_URL}/news/popular`);
             popularNewsDispatch({ type: POPULAR_NEWS_SUCCESS, pyload: data })
         } catch (error) {
             popularNewsDispatch({ type: POPULAR_NEWS_FAIL, pyload: error.response.data.message })
@@ -146,7 +146,7 @@ export const HomeContextProvider = ({ children }) => {
     const loadMostView = async () => {
         try {
             mostViewDispatch({ type: MOST_VIEW_REQUEST });
-            const { data } = await axios.get("${API_URL}/news/mostView");
+            const { data } = await axios.get(`${API_URL}/news/mostView`);
             mostViewDispatch({ type: MOST_VIEW_SUCCESS, pyload: data });
         } catch (error) {
             mostViewDispatch({ type: MOST_VIEW_FAIL, pyload: error.response.data.message })
@@ -168,7 +168,7 @@ export const HomeContextProvider = ({ children }) => {
     // تابع دریافت دسته بندی ها 
     const loadCategory = async () => {
         try {
-            const res = await axios.get("${API_URL}/home/get-category");
+            const res = await axios.get(`${API_URL}/home/get-category`);
             setCategories(res.data)
             console.log(res);
         } catch (error) {
@@ -227,7 +227,7 @@ export const HomeContextProvider = ({ children }) => {
 
     const contactUsByEmail = async (data) => {
         try {
-            const res = await axios.post("${API_URL}/send-email", data)
+            const res = await axios.post(`${API_URL}/send-email`, data)
            if (res.data.error) {
                 toast.error(res.data.error, {
                     position: "bottom-center",
@@ -258,7 +258,7 @@ export const HomeContextProvider = ({ children }) => {
 
     const getUsers = async () => {
         try {
-            const res = await axios.get("${API_URL}/get-users");
+            const res = await axios.get(`${API_URL}/get-users`);
             setUsers(res.data);
         } catch (error) {
             console.log(error);

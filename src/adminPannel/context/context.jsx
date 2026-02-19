@@ -47,7 +47,7 @@ export const AdminContextProvider = ({ children }) => {
 
     const refreshToken = async () => {
         try {
-            const res = await axios.get("${API_URL}/token");
+            const res = await axios.get(`${API_URL}/token`);
             setToken(res.data.accsessToken);
             const decoded = jwtDecode(res.data.accsessToken);
             //  مقدار دهی استیت ها 
@@ -71,7 +71,7 @@ export const AdminContextProvider = ({ children }) => {
         async (config) => {
             const currentDate = new Date();
             if (expire * 1000 < currentDate.getTime()) {
-                const response = await axios.get("${API_URL}/token");
+                const response = await axios.get(`${API_URL}/token`);
                 config.headers.Authorization = `Bearer ${response.data.accsessToken}`;
                 setToken(response.data.accsessToken);
                 const decoded = jwtDecode(response.data.accsessToken);
@@ -95,7 +95,7 @@ export const AdminContextProvider = ({ children }) => {
     const login = async (input) => {
         try {
             // می خوایم دیتا را به سمت بک اند ارسال کنیم 
-            const res = await axios.post("${API_URL}/users/login", input)
+            const res = await axios.post(`${API_URL}/users/login`, input)
             if (res.data.error) {
                 toast.error(res.data.error, {
                     position: "bottom-center",
