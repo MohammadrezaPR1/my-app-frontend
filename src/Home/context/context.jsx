@@ -2,7 +2,7 @@ import { createContext, useEffect, useReducer, useState } from "react";
 import { videoReducer } from "./reducers/reducerVideo";
 import { VIDEO_REQUEST, VIDEO_SUCCESS, VIDEO_FAIL } from "./constants/videoConstants";
 import axios from "axios";
-import { API_URL } from "../config/api";
+import { API_URL } from "../../config/api";
 import { lastPostReducer } from "./reducers/reducerLastPost";
 import { LAST_POST_REQUEST, LAST_POST_SUCCESS, LAST_POST_FAIL } from "./constants/lastPostConstants";
 import { popularNewsReducer } from "./reducers/reducerPopularNews";
